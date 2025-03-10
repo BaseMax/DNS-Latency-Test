@@ -59,6 +59,10 @@ DNS Server          Ping (ms)   Query Time (ms)
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
+## Acknowledgements
+
+The idea for this project is originally inspired by [DNS-Test-Speed](https://github.com/netamirbabaei/DNS-Test-Speed).
+
 ## Author
 
 Copyright (c) 2025 Max Base
