@@ -58,10 +58,16 @@ run_dns_test() {
     fi
 
     response_time=$(check_dns_response_time "$dns_ip")
-    [[ -z "$response_time" ]] && response_time="Timeout"
+    if [[ -z "$response_time" ]]; then
+        response_time="Timeout"
+    fi
     color=$(get_response_time_color "$response_time")
 
-    printf "%-20s ${COLOR_GREEN}%s ms${COLOR_RESET}   %s%s ms${COLOR_RESET}\n" "$dns_ip" "$ping_time" "$color" "$response_time" >> "$TEMP_RESULTS_FILE"
+    if [[ "$response_time" == "Timeout" ]]; then
+        printf "%-20s ${COLOR_RED}%s ms${COLOR_RESET}   ${COLOR_RED}Timeout${COLOR_RESET}\n" "$dns_ip" "$ping_time" >> "$TEMP_RESULTS_FILE"
+    else
+        printf "%-20s ${COLOR_GREEN}%s ms${COLOR_RESET}   %s%s ms${COLOR_RESET}\n" "$dns_ip" "$ping_time" "$color" "$response_time" >> "$TEMP_RESULTS_FILE"
+    fi
 }
 
 process_dns_servers() {
