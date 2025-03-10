@@ -58,7 +58,7 @@ run_dns_test() {
     fi
 
     response_time=$(check_dns_response_time "$dns_ip")
-    if [[ -z "$response_time" ]]; then
+    if [[ -z "$response_time" || "$response_time" == "Timeout" ]]; then
         response_time="Timeout"
     fi
     color=$(get_response_time_color "$response_time")
@@ -85,8 +85,18 @@ display_fastest_slowest() {
     local fastest slowest
     fastest=$(awk '$3 ~ /^[0-9]+$/ {print $0}' "$TEMP_RESULTS_FILE" | sort -nk3 | head -n 1)
     slowest=$(awk '$3 ~ /^[0-9]+$/ {print $0}' "$TEMP_RESULTS_FILE" | sort -nk3 | tail -n 1)
-    echo -e "\n🚀 Fastest DNS: ${COLOR_GREEN}${fastest}${COLOR_RESET}"
-    echo -e "🐢 Slowest DNS: ${COLOR_RED}${slowest}${COLOR_RESET}"
+
+    if [[ -n "$fastest" && "$fastest" != "Timeout" ]]; then
+        echo -e "\n🚀 Fastest DNS: ${COLOR_GREEN}${fastest}${COLOR_RESET}"
+    else
+        echo -e "\n🚀 Fastest DNS: ${COLOR_RED}No valid DNS found${COLOR_RESET}"
+    fi
+
+    if [[ -n "$slowest" && "$slowest" != "Timeout" ]]; then
+        echo -e "🐢 Slowest DNS: ${COLOR_RED}${slowest}${COLOR_RESET}"
+    else
+        echo -e "🐢 Slowest DNS: ${COLOR_RED}No valid DNS found${COLOR_RESET}"
+    fi
 }
 
 validate_dns_list_file
