@@ -68,7 +68,6 @@ process_dns_servers() {
     while read -r dns_ip; do
         [[ -n "$dns_ip" ]] && run_dns_test "$dns_ip" &
     done < "$DNS_LIST_FILE"
-    sleep "$PING_TIMEOUT"
     wait
 }
 
