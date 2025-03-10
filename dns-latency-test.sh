@@ -79,8 +79,6 @@ process_dns_servers() {
 
 display_results() {
     sort -nk3 "$TEMP_RESULTS_FILE" 2>/dev/null
-    rm -f "$TEMP_RESULTS_FILE"
-    echo "------------------------------------------------------"
 }
 
 display_fastest_slowest() {
@@ -100,3 +98,5 @@ process_dns_servers
 display_results
 
 display_fastest_slowest
+
+rm -f "$TEMP_RESULTS_FILE"
